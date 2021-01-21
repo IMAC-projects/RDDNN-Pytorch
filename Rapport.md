@@ -28,7 +28,6 @@ Enfin, nous allons comparer les résultats obtenues et conclure sur la solution 
 
 - Contributions. Why is the studied method different/better/worse/etc. than existing previous works. 
 
-  
 
 ## Analyse en composantes principales
 
@@ -214,15 +213,138 @@ Les chiffres sous les images corresponds à 3 mesures permettant d'évaluation d
 
 ## Restricted Boltzmann Machines
 
+Inventée par Geoffrey Hinton, les machines Boltzmann restreintes sont des réseaux neuronaux peu profonds à deux couches qui constituent les éléments de base des réseaux profond.
+
 ### L'idée
 
-TODO
+Une RBM est utilisée pour avoir une estimation de la distribution probabiliste d'un jeu de données.
+
+La première couche du RBM est appelée la couche visible, ou couche d'entrée, et la seconde est la couche cachée.
 
 ### énergie d'activation
 
+On défini l'énergie d'activation d'une machine de Brotzman restreinte par la formule suivante :
+$$
+E = -\sum_i b_iv_i - \sum_j c_jh_j - \sum_{i,j} w_{ij}v_ih_j
+$$
+avec :
+
+- $w_{ij}$ le poids entre le neurone $j$ et le neurone $i$
+- $v_i$ l'état du neurone $i$ de la couche visible
+- $h_j$ l'état du neurone $j$ de la couche cachée (hidden)
+- $b_i$ et $c_j$ sont les biais des neurones $v_i$ et $h_j$ d'entrée et de sortie
+
+Cette énergie interpréter comme l'énergie d'un système physique et on peut définir le score d'une configuration énergétique comme l'inverse de cette énergie. Plus l'énergie est faible(stabilité) plus le score est élevé.
+$$
+\text{Score} = - E
+$$
+
+### Probabilité
+
+Considérons des scores données pour des configuration possible de notre système.
+$$
+[ 0, 1, 2, 5, 8]
+$$
+Il est intéressant d'exprimer le score de ces configurations en probabilités et le moyen le plus classique est de normaliser ces score par la somme de tout les scores :
+
+![scoresProba](src\RBM\imgs\scoresProba.png)
+
+Cependant des problème peuvent survenir avec des score négatifs car ils peuvent se compenser et la somme peut alors être nulles.
+
+Un moyen naturel peut être de passé à l'exponentiel puis de normaliser, c'est ce qu'on appel l'opération de softmax.
+
+![softmax](src\RBM\imgs\softmax.png)
+
+C'est ainsi que l'on peut définir la probabilité d'avoir une certaines configuration entré sortie $(v_i, h_j)$ :
+$$
+P(v_i, h_j) = {e^{-E(v_i, h_j)} \over Z}
+$$
+ou $Z$ est la constante de normalisation.
+
+### Positionnement du problème
+
+L'idée générale est de modifier les poids $w_{ij}$ pour approcher au mieux la distribution de probabilité de nos données.
+C'est différente d'un algorithme plus classique comme une régression par exemple, qui estime une valeur continue basée sur de nombreuses entrées.
+
+Imaginons que les données d'entrée et les reconstructions soient des courbes normales de formes différentes, qui ne se chevauchent que partiellement.
+
+En ajustant itérativement les poids en fonction de l'erreur qu'ils produisent ou de leurs scores, une RBM apprend à se rapprocher des données originales en mimant la distribution de probabilité des données d'origine dans les données de la couche cachée. On pourrait dire que les poids en viennent lentement à refléter la structure de l'entrée qui est encodée dans la couche cachée.
+
+Considérons un exemple simple dans lequel une personnes dispose de trois accessoires :
+
+Une paire de lunette (noté **L**), une Parapluie (noté **P**) et une caméra (noté **C**)
+
+Regardons ce qu'elle décide ou non de prendre lorsqu'elle sort de chez elle en fonction des jours de la semaine:
+
+| jour | Lunettes :eyeglasses: | Parapluie :closed_umbrella: | Camera :camera:    |
+| ---- | --------------------- | --------------------------- | ------------------ |
+| 0    | :heavy_check_mark:    | :x:                         | :heavy_check_mark: |
+| 1    | :x:                   | :heavy_check_mark:          | :x:                |
+| 2    | :heavy_check_mark:    | :x:                         | :heavy_check_mark: |
+| 3    | :heavy_check_mark:    | :x:                         | :heavy_check_mark: |
+| 4    | :x:                   | :heavy_check_mark:          | :x:                |
+| 5    | :x:                   | :heavy_check_mark:          | :x:                |
+| 6    | :x:                   | :heavy_check_mark:          | :heavy_check_mark: |
+| 7    | :heavy_check_mark:    | :x:                         | :heavy_check_mark: |
+| 8    | :heavy_check_mark:    | :x:                         | :heavy_check_mark: |
+| 9    | :x:                   | :heavy_check_mark:          | :x:                |
+
+Ces données vont constituer nos données d'entrée de la couche d'input.
+
+Considérons maintenant qu'il existe deux facteurs qui pourrait expliquer ce données: la présence ou non de soleil :high_brightness: (noté **S**) et d'averse :sweat_drops: ​(noté **A**) au cours de la journée. ​
+
+Ces facteurs vont constituer la couche cachés de notre système.
+
+Initialisons maintenant tous nos points à 0 et traçons la probabilité de chaque configuration d'entré sortie.
+
+> nous ignorerons les biais associés aux entrées et sorties dans notre exemple pour plus de simplicité.
+
+> Une configuration est notée avec une suite de lettre montrant la présence ou non de l'accessoire et d'un évènement météorologique.
+
+![uniformProbabilities](src\RBM\imgs\uniformProbabilities.png)
+
+On constate évidement que toutes les configurations sont équiprobables (car tout nos poids nuls et donc l'énergie de chaque configuration est nulle)
+
+On aimerais se rapprocher d'un configuration de probabilité qui représente nos données c'est à dire qui exprime les formations possible de notre jeu de données.
+
+Dans notre cas voici les configurations qui apparaissent tout au long de la semaine concernant les inputs : 
+
+| jour          | 0                     | 1    | 2                     | 3                     | 4                 | 5                 | 6                         | 7                     | 8                     | 9                 |
+| ------------- | --------------------- | ---- | --------------------- | --------------------- | ----------------- | ----------------- | ------------------------- | --------------------- | --------------------- | ----------------- |
+| configuration | :eyeglasses: :camera: | :    | :eyeglasses: :camera: | :eyeglasses: :camera: | :closed_umbrella: | :closed_umbrella: | :closed_umbrella::camera: | :eyeglasses: :camera: | :eyeglasses: :camera: | :closed_umbrella: |
+
+En incluant les configurations possible de notre couche cachée , il est possible de lister ainsi toutes les configurations (entrée et sortie) envisageables:
+
+- :eyeglasses: :camera:
+- :eyeglasses: :camera::sweat_drops:
+- :eyeglasses: :camera::high_brightness:
+-  : ::: 
+- :closed_umbrella:
+- :closed_umbrella::sweat_drops:
+- :closed_umbrella::high_brightness:
+-  :closed_umbrella::high_brightness::sweat_drops: 
+- :closed_umbrella: :camera:
+- :closed_umbrella: :camera::sweat_drops:
+- :closed_umbrella: :camera::high_brightness:
+- :closed_umbrella: :camera::high_brightness::sweat_drops: 
+
+On aimerai donc trouver les poids de notre algorithme pour que les configurations ou évènements envisageables aient une grande probabilité et les autres une faible probabilité.
+
+Cela donnerai quelque chose comme cela pour notre exemple :
+
+![exempleWantedProbabilities](src\RBM\imgs\exempleWantedProbabilities.png)
+
+> évènement :eyeglasses: :camera: (LC) à lieu 5 fois dans la semaine. Il est donc normale que cette configuration soit plus probable que l'évènement :closed_umbrella: (P) (qui a lieu 3 fois) ou que l'évènement :closed_umbrella: :camera: (PC) (qui a lieu une unique fois).
+
+On peut reformuler cela mathématique dans le sens ou on cherche à maximiser le produit des probabilités des évènements probables de notre jeu de donnée.
+$$
+arg \; \underset{W}{max}\;\underset{v \in V}{\Pi}P(v)
+$$
+
+
 ### Apprentissage
 
-TODO
+####  *Contrastive Divergence*
 
 
 
@@ -240,10 +362,15 @@ ajout des photo tirées du papier, unfolding multicouche, ..
 
 ## Conclusion
 
+> Learning with examples first is always better than starting with math
+
 résultats obtenus, ..
 
-
 limitations, erreurs, ouvertures, améliorations, papiers plus récents sur la même problématique
+
+
+
+Bien que les RBM soient parfois utilisés, ils sont peu à peu ont dépréciés au profit de réseaux adversaires générateurs (GAN) ou d'auto-codeurs variationnels(VAE) .
 
 ## Bibliographie
 
