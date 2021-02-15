@@ -95,9 +95,9 @@ $$
    Cov(x, y) & Cov(y, y) \\
 \end{pmatrix}
 $$
-Le long de la diagonale se trouvera la variance de chaque variable (à ${1 \over N}$ près), et le reste de la matrice sera constituée des covariances. 
+Le long de la diagonale se trouvera la variance de chaque variable (à un facteur ${(N-1) \over N}$ près), et le reste de la matrice sera constituée des covariances. 
 
-> Remarque : Puisque l'ordre des variables n'a pas d'importance lors du calcul de la covariance, la matrice sera *symétrique* et sera donc *carrée*.
+> Remarque : La matrice est *carrée* et puisque l'ordre des variables n'a pas d'importance lors du calcul de la covariance, la matrice sera *symétrique*.
 
 On obtient dans notre exemple : 
 $$
@@ -110,7 +110,7 @@ Nous avons donc maintenant une matrice de covariance. L'étape suivante de l'ACP
 
 ### Vecteurs propres
 
-Par définition, étant donné une matrice (ou "opérateur linéaire")  ${\bf A}$ de taille $n\times n$ il existe un ensemble de $n$ vecteurs $\vec{v}_i$ de sorte que la multiplication d'un de ces vecteurs par ${\bf A}$ donne un vecteur proportionnel (d'un facteur $\lambda_i$) à $\vec{v}_i$.
+D'après le Théorème Spectral, pour une matrice ${\bf A}$ *symétrique réelle* de taille $n\times n$ il existe un ensemble de $n$ vecteurs $\vec{v}_i$ de sorte que la multiplication d'un de ces vecteurs par ${\bf A}$ donne un vecteur proportionnel (d'un facteur $\lambda_i$) à $\vec{v}_i$.
 $$
 {\bf A} \vec{v}_i = \lambda_i \vec{v}_i
 $$
@@ -132,7 +132,7 @@ $v_1 = \begin{pmatrix}0.89454536 \\ 0.44697717\end{pmatrix}$ et $v_2 = \begin{pm
 
 ![plot2DEigensVectors](src\PCA\imgs\plot2DEigensVectors.png)
 
-On remarque bien ici que le vecteur propre $v_1$ indique la direction qui maximise la variance de nos donnée. On a donc bien trouvé ici l'axe "principal" de notre jeu de données. Le deuxième vecteur propre pointe dans la direction de la plus petite variance et est orthogonal au premier vecteur.
+On remarque bien ici que le vecteur propre $v_1$ indique la direction qui maximise la variance de nos donnée. On a donc bien trouvé ici l'axe "principal" de notre jeu de données. Le deuxième vecteur propre pointe dans la direction de la plus petite variance et est orthogonal au premier vecteur (conséquence du fait que la matrice est symétrique réelle).
 
 >  Remarque : la longueur des vecteurs est exprimée à l'aide de leurs valeurs propre pour illustrer l'importance des différents axes dans la variance de nos données.
 
