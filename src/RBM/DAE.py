@@ -3,20 +3,37 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 class DAE(nn.Module):
-
-    def __init__(self, models):
+    def __init__(self, models, layers = None):
         super(DAE, self).__init__()
 
-        # extract weights from each model
+         # extract weights from each model
         encoders = []
         encoderBiases = []
         decoders = []
         decoderBiases = []
-        for model in models:
-            encoders.append(nn.Parameter(model.W.clone()))
-            encoderBiases.append(nn.Parameter(model.hBias.clone()))
-            decoders.append(nn.Parameter(model.W.clone()))
-            decoderBiases.append(nn.Parameter(model.vBias.clone()))
+
+        if layers is not None:
+            self.layersSize = layers
+            # empty initialization
+            for visibleDim, hiddenDIm in zip(layers[:-1,], layers[1:]):
+                encoders.append(nn.Parameter(torch.zeros(visibleDim, hiddenDIm)))
+                encoderBiases.append(nn.Parameter(torch.zeros(hiddenDIm)))
+                encoders.append(nn.Parameter(torch.zeros(visibleDim, hiddenDIm)))
+                encoderBiases.append(nn.Parameter(torch.zeros(visibleDim)))
+        else:
+
+            self.layersSize = []
+           
+            for model in models:
+                encoders.append(nn.Parameter(model.W.clone()))
+                encoderBiases.append(nn.Parameter(model.hBias.clone()))
+                decoders.append(nn.Parameter(model.W.clone()))
+                decoderBiases.append(nn.Parameter(model.vBias.clone()))
+
+                self.layersSize.append(list(model.W.size())[0])
+            self.layersSize.append(list(models[-1].W.size())[1])
+
+        print("DAE build with layers size " + "-".join(map(str, self.layersSize)))
 
         # build encoders and decoders
         self.encoders = nn.ParameterList(encoders)
@@ -47,6 +64,24 @@ class DAE(nn.Module):
             activation = torch.mm(Hp, W.t()) + vBias
             Hp = torch.sigmoid(activation)
         return Hp
+    
+    def layersStr(self):
+        return "-".join(map(str, self.layersSize))
+    
+    def load(self, savePath):
+        if savePath is not None:
+            try:
+                checkpoint = torch.load(savePath + "_" + self.layersStr() + ".pth")
+                self.load_state_dict(checkpoint)
+                self.eval()
+                print("Model loaded")
+            except:
+                print("Model checkpoint not found")
+
+    def save(self, savePath):
+        if savePath is not None:
+            torch.save(self.state_dict(), savePath + "_" + self.layersStr() + ".pth")
+            print('Model saved')
 
 class Naive_DAE(nn.Module):
     def __init__(self, layers):
