@@ -370,7 +370,7 @@ Voilà ce que cela donne si on effectue ce processus itératif une fois sur chac
 
 Un problème de taille s'impose malheureusement à nous.
 En pratique il est impossible de considérer ni même de stocker les évènements dont nous parlons depuis le début.
-En effet, il y a $2^{M \times N}$ combinaisons d'évènements possible pour une **RBM** ayant une couche visible de taille $M$ et une une couche cachée de taille $N$.
+En effet, il y a $2^{M + N}$ combinaisons d'évènements possible pour une **RBM** ayant une couche visible de taille $M$ et une une couche cachée de taille $N$.
 
 Dans notre exemple cela reste relativement raisonnable : $2^{2+3} = 32$ mais en pratique avec une couche visible de taille **200** et une couche cachée de taille **100** cela nous amène à considérer $2^{300}$ évènements ce qui est plus que le nombre d'atomes dans l'univers observable.
 
