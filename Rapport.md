@@ -226,9 +226,9 @@ Une RBM est utilisée pour avoir une estimation de la distribution probabiliste 
 
 La première couche de la RBM est appelée la couche visible, ou couche d'entrée, et la seconde est la couche cachée.
 
-nous détaillerons ici plus précisément le fonctionnement d'une RBM de Bernoulli qui à considère les unités visibles et cachés comme étants des valeurs binaires.
+Nous détaillerons ici plus précisément le fonctionnement d'une RBM de Bernoulli qui considère les unités visibles et cachées comme étant des valeurs binaires.
 
-### énergie d'activation
+### Énergie d'activation
 
 On définit l'énergie d'activation d'une machine de Boltzmann restreinte par la formule suivante :
 $$
@@ -266,11 +266,11 @@ Un moyen naturel peut être de passer à l'exponentielle puis de normaliser, c'e
 
 ![softmax](src\RBM\imgs\softmax.png)
 
-C'est ainsi que l'on peut définir la probabilité d'avoir une certaines configuration entré sortie $(\bold v, \bold h)$ :
+C'est ainsi que l'on peut définir la probabilité d'avoir une certaine configuration entrée-sortie $(\bold v, \bold h)$ :
 $$
 P(\bold v, \bold h) = {e^{-E(\bold v, \bold h)} \over Z}
 $$
-ou $Z$ est une constante de normalisation définie ainsi:
+où $Z$ est une constante de normalisation définie ainsi:
 $$
 Z=\sum_{i,j} e^{-E(\bold v, \bold h)}
 $$
@@ -281,7 +281,7 @@ $$
 L'idée générale est de modifier les poids $w_{ij}$ pour approcher au mieux la distribution de probabilité de nos données.
 C'est différent d'un algorithme plus classique comme une régression par exemple, qui estime une valeur continue basée sur de nombreuses entrées.
 
-En ajustant itérativement les poids en fonction de l'erreur qu'ils produisent ou de leurs scores, une RBM apprend à se rapprocher de la distribution de probabilité des données originales. On pourrait dire que les poids viennent à refléter la structure de l'entrée au travers des probabilités de la couche cachée.
+En ajustant itérativement les poids en fonction de l'erreur qu'ils produisent ou de leurs scores, une RBM apprend à se rapprocher de la distribution de probabilité des données originales. On pourrait dire que les poids en viennent à refléter la structure de l'entrée au travers des probabilités de la couche cachée.
 
 Considérons un exemple simple dans lequel une personne dispose de trois accessoires :
 
@@ -354,9 +354,9 @@ Cela donnerait quelque chose comme cela pour notre exemple :
 
 ####  *Contrastive Divergence*
 
-Il faut donc faire converger nos probabilités uniformes initiales (poids nulles) vers les probabilités voulues issues des évènements de notre dataset.
-Pour cela, on va donc procéder par itérations sur chaque évènement de notre dataset afin d'augmenter la probabilités de l'évènement considéré et diminuer la probabilité de tous les autres évènements.
-Cela donne par exemple pour le 1er jour (1ère évènement de notre dataset) :
+Il faut donc faire converger nos probabilités uniformes initiales (poids nuls) vers les probabilités voulues issues des évènements de notre dataset.
+Pour cela, on va donc procéder par itérations sur chaque évènement de notre dataset afin d'augmenter la probabilité de l'évènement considéré et diminuer la probabilité de tous les autres évènements.
+Cela donne par exemple pour le 1er jour (1er évènement de notre dataset) :
 
 ![jour1](src\RBM\imgs\jour1.png)
 
@@ -366,18 +366,18 @@ Voilà ce que cela donne si on effectue ce processus itératif une fois sur chac
 
 <div style="page-break-after: always; break-after: page;"></div>
 
-### GIbbs sampling
+### Gibbs sampling
 
 Un problème de taille s'impose malheureusement à nous.
-En pratique il est impossible de considérer n'y même de stocker les évènements dont nous parlons depuis le début.
-En effet, il y a $2^{M \times N}$ combinaisons d'évènements possible pour un **RBM** ayant une couche visible de taille $M$ et une une couche cachée de taille $N$.
+En pratique il est impossible de considérer ni même de stocker les évènements dont nous parlons depuis le début.
+En effet, il y a $2^{M \times N}$ combinaisons d'évènements possible pour une **RBM** ayant une couche visible de taille $M$ et une une couche cachée de taille $N$.
 
 Dans notre exemple cela reste relativement raisonnable : $2^{2+3} = 32$ mais en pratique avec une couche visible de taille **200** et une couche cachée de taille **100** cela nous amène à considérer $2^{300}$ évènements ce qui est plus que le nombre d'atomes dans l'univers observable.
 
-Au lieu d'augmenter la probabilité de tous les évènements probables en fonction de notre donnée d'entrée on va plutôt en sélectionner un de manière aléatoire et augmenter sa probabilité. Puis, choisir un autre évènement de manière "aléatoire" et diminuer sa probabilité. Ce processus de deux étapes, si répété suffisamment, va permettre d'approcher le résultat voulu.
+Au lieu d'augmenter la probabilité de tous les évènements probables en fonction de notre donnée d'entrée on va plutôt en sélectionner un de manière aléatoire et augmenter sa probabilité. Puis choisir un autre évènement de manière "aléatoire" et diminuer sa probabilité. Ce processus de deux étapes, si répété suffisamment, va permettre d'approcher le résultat voulu.
 
-Cependant, Nous ne voulons pas exactement sélectionner un évènement aléatoirement dans ces deux étapes. 
-En effet, il est plus judicieux d'augmenter la probabilité d'une évènement possible suivant un entrée donnée de notre dataset si sa probabilité actuelle et faible. De même, il est souhaitable de diminuer la probabilité d'un évènement actuellement plus probable dans la seconde étape.
+Cependant, nous ne voulons pas exactement sélectionner un évènement aléatoirement dans ces deux étapes. 
+En effet, il est plus judicieux d'augmenter la probabilité d'une évènement possible suivant une entrée donnée de notre dataset si sa probabilité actuelle est faible. De même, il est souhaitable de diminuer la probabilité d'un évènement actuellement plus probable dans la seconde étape.
 
 ---
 
@@ -394,20 +394,20 @@ avec :
 $$
 \sigma(x) = { 1 \over 1+ e^{-x}}
 $$
-Comme on l'a évoqué précédemment, il est impossible de considérer n'y même de calculer la probabilité de chaque événements pour choisir de diminuer celui qui possède la plus grand probabilité.
+Comme on l'a évoqué précédemment, il est impossible de considérer ni même de calculer la probabilité de chaque événement pour choisir de diminuer celui qui possède la plus grand probabilité.
 
-On va donc pouvoir effectuer un échantillonnage de Gibbs itérativement en ayant connaissance probabilités conditionnelles indépendantes pour une couche en faisant des aller retour entre les deux couches comme cela :
+On va donc devoir effectuer un échantillonnage de Gibbs itérativement en ayant connaissance des probabilités conditionnelles indépendantes pour une couche en faisant des aller-retours entre les deux couches comme cela :
 $$
 h_j^{(n+1)} \sim p(h_j | \bold v^{(n)})  \\
 v_i^{(n+1)} \sim p(v_i | \bold h^{(n+1)})
 $$
-En principe $n$ doit être grand pour que l'échantillonnage soit efficace et reflète réellement un tirage aléatoire. En pratique, ces erreurs sont négligeables et vont être compensées par la suite lors de l'utilisation de ces RBM dans un processus de fine-tuning par descente de gradient.
+En principe $n$ doit être grand pour que l'échantillonnage soit efficace et reflète réellement un tirage aléatoire. En pratique, ces erreurs sont négligeables et vont être compensées par la suite lors de l'utilisation de ces RBMs dans un processus de fine-tuning par descente de gradient.
 
 ---
 
 ### Récapitulatif
 
-On peut reformuler l'apprentissage mathématique dans le sens l'ou cherche à trouver les poids (et biais) maximisant le produit des probabilités des évènements de notre jeu de donnée ($D$).
+On peut reformuler l'apprentissage mathématique dans le sens où l'on cherche à trouver les poids (et biais) maximisant le produit des probabilités des évènements de notre jeu de données ($D$).
 
 $$
 arg \; \underset{W}{max}\;\underset{\bold v \in D}{\Pi}p(\bold v)
@@ -420,9 +420,9 @@ $$
 {\partial \over \partial W}log(P(v_n)) = \mathbb{E}\left[ {\partial \over \partial W} - E(v, h) | v= v_n \right] - \mathbb{E}\left[ {\partial \over \partial W} - E(v, h) \right]
 $$
 
-> **Remarque:**
+> **Remarque :**
 >
-> Jusqu'à présent nous avons considéré des valeurs d'entrées et de sorties binaire. Mais cela pose un problème lorsque l'on s'intéresse à des données plus complexes (continues) comme des images par exemples.
+> Jusqu'à présent nous avons considéré des valeurs d'entrée et de sortie binaires. Mais cela pose un problème lorsque l'on s'intéresse à des données plus complexes (continues) comme des images par exemple.
 >
 > Après quelques modifications il est possible de généraliser et considérer des valeurs continues sous quelques contraintes de normalisation de ces valeurs (sous forme de distribution gaussienne par exemple).
 
@@ -433,16 +433,16 @@ $$
 Le but de de la recherche proposée est de réduire la dimensionnalité de nos données sur la base d'une structure de réseaux auto-encodeurs.
 
 Les auto-encodeurs sont un type spécifique de réseaux neuronaux où la taille de l'entrée est la même que la sortie. Ils compriment l'entrée en un code de dimension inférieure et reconstruisent ensuite la sortie à partir de cette représentation. Le code est un "résumé" compact ou une "compression" de l'entrée, également appelée représentation en espace latent (latent-space).
-Un auto-codeur se compose donc de 3 éléments : l'encodeur, le code et le décodeur. L'encodeur compresse l'entrée et produit le code, le décodeur reconstruit ensuite l'entrée uniquement à l'aide de ce code.
+Un auto-codeur se compose donc de trois éléments : l'encodeur, le code et le décodeur. L'encodeur compresse l'entrée et produit le code, le décodeur reconstruit ensuite l'entrée uniquement à l'aide de ce code.
 
 ![autoEncoder](imgs\autoEncoder.png)
 
-Cependant, il est difficile d'optimiser les poids dans les auto-encodeurs non linéaires qui ont de nombreuses couches cachées. Avec des poids initiaux élevés, ils trouvent généralement de mauvais minima locaux ; avec des poids initiaux faibles, les gradients dans les premières couches sont très faibles, ce qui rend impossible l'entrainement efficace d'auto-encodeurs avec de nombreuses couches cachées. 
+Cependant, il est difficile d'optimiser les poids dans les auto-encodeurs non-linéaires qui ont de nombreuses couches cachées. Avec des poids initiaux élevés, ils trouvent généralement de mauvais minima locaux ; avec des poids initiaux faibles, les gradients dans les premières couches sont très faibles, ce qui rend impossible l'entraînement efficace d'auto-encodeurs avec de nombreuses couches cachées. 
 
-Si les poids initiaux sont proches d'une bonne solution, l'apprentissage et la descente de gradient fonctionne bien. L'idée est d'utiliser plusieurs RBM en amont pour se rapprocher d'une bonne solution et d'affiner les poids du réseaux par descente classique ensuite.
+Si les poids initiaux sont proches d'une bonne solution, l'apprentissage et la descente de gradient fonctionnent bien. L'idée est d'utiliser plusieurs RBM en amont pour se rapprocher d'une bonne solution et d'affiner les poids du réseau par descente classique ensuite.
 
-L'architecture proposée est constituée de différentes RBM successives de plus en plus petites afin de réduire en plusieurs étapes la dimensionnalité des données. 
-Ces RMB sont ensuite utilisées dans l'autre sens (unfolding multicouche) pour constituer la partie que l'on appel décodeur et qui permet de reconstituer les données à partir de la représentation en dimension inférieure que l'on appel le code (ou la compression).
+L'architecture proposée est constituée de différentes RBMs successives de plus en plus petites afin de réduire en plusieurs étapes la dimensionnalité des données. 
+Ces RMBs sont ensuite utilisées dans l'autre sens (unfolding multicouche) pour constituer la partie que l'on appelle décodeur et qui permet de reconstituer les données à partir de la représentation en dimension inférieure que l'on appelle le code (ou la compression).
 
 ![image-20210205113440207](imgs\RMBAutoEncoder.png)
 
@@ -452,21 +452,21 @@ Ces RMB sont ensuite utilisées dans l'autre sens (unfolding multicouche) pour c
 
 ## Comparaison et résultats
 
-Pour tester nos résultats nous avons fait le choix d'utiliser le jeu de données bien connu **MNIST** qui nous donne accès à des images de 28x28 pixels représentants des chiffres écrits à la main. 
+Pour tester nos résultats nous avons fait le choix d'utiliser le jeu de données bien connu **MNIST** qui nous donne accès à des images de 28x28 pixels représentant des chiffres écrits à la main. 
 
 ### Modèle 784-1000-500-250-3
 
-Dans un premier temps nous avons testé une architecture proposée dans le papier de recherche en changeant seulement la taille de la dernière couche d'encodage (3 dimensions au lieu de 2) pour pouvoir visualiser le résultat en 3D. Cela va nous permettre de comparer avec avec une analyse en composante principale (PCA) en concevant les trois premières composantes (ce qui reste très peu).
+Dans un premier temps nous avons testé une architecture proposée dans le papier de recherche en changeant seulement la taille de la dernière couche d'encodage (3 dimensions au lieu de 2) pour pouvoir visualiser le résultat en 3D. Cela va nous permettre de comparer avec une analyse en composante principale (PCA) en conservant les trois premières composantes (ce qui reste très peu).
 
 **PCA**
 
 ![PCA3Projection](src\RBM\imgs\PCA3Projection.png)
 
-On remarque quelques séparations comme les "1" regroupé en bleu marine en bas à droite et les "0" en marron en haut. Cependant, les trois premières composantes représente seulement 29,1% de la variance des données ce qui est trop peu pour les représenter correctement en si peu de de dimensions. Voilà ce que la reconstruction donne en images :
+On remarque quelques séparations comme les "1" regroupés en bleu marine en bas à droite et les "0" en marron en haut. Cependant, les trois premières composantes représentent seulement 29,1% de la variance des données ce qui est trop peu pour les représenter correctement en si peu de de dimensions. Voilà ce que la reconstruction donne en images :
 
 ![RBMReconstruct(784-1000-500-250-3)](src\RBM\imgs\PCA(3).png)
 
-On se rends d'autant plus compte ici que la reconstruction n'est pas du tout fidèle aux données d'origine et n'est pas pertinente pour de la compression.
+On se rend d'autant plus compte ici que la reconstruction n'est pas du tout fidèle aux données d'origine et n'est pas pertinente pour de la compression.
 
 **RBM**
 
@@ -474,9 +474,9 @@ On se rends d'autant plus compte ici que la reconstruction n'est pas du tout fid
 
 Ici, le résultat est vraiment plus satisfaisant. Les domaines des différents chiffres sont bien distincts en 3D.
 
-Nous obtenons  une erreur quadratique moyenne (MSE) de 19.95 pour les données d'entrainement contre 21.7 sur les données de test. Cela peut s'expliquer facilement par le fait qu'il n'y a pas assez de dimensions pour encoder toute la complexité de nos données malgré une représentation satisfaisant en seulement 3 dimensions.  Voilà ci dessous les reconstructions obtenues. 
+Nous obtenons une erreur quadratique moyenne (MSE) de 19.95 pour les données d'entraînement contre 21.7 sur les données de test. Cela peut s'expliquer facilement par le fait qu'il n'y a pas assez de dimensions pour encoder toute la complexité de nos données malgré une représentation satisfaisant en seulement 3 dimensions. Voilà ci dessous les reconstructions obtenues. 
 
-> On remarque quelles sont tout de même assez "floues" par manque de complexité dans la représentation compressée.
+> On remarque qu'elles sont tout de même assez "floues" par manque de complexité dans la représentation compressée.
 
 ![RBMReconstruct(784-1000-500-250-3)](src\RBM\imgs\RBMReconstruct(784-1000-500-250-3).png)
 
@@ -493,40 +493,40 @@ Une dimension de 30 éléments pour le code représentant nos données devrait �
 
 ![PCA(30)](src\RBM\imgs\PCA(30).png)
 
-La reconstruction obtenu grâce à l'analyse en composantes principales est légèrement meilleure cependant les 30 dimensions représentent seulement 74,6 % de la variance de nos données. Cela reste trop peu et on l'observe clairement dans la reconstruction ci dessus.
+La reconstruction obtenue grâce à l'analyse en composantes principales est légèrement meilleure, cependant les 30 dimensions représentent seulement 74,6 % de la variance de nos données. Cela reste trop peu et on l'observe clairement dans la reconstruction ci-dessus.
 
 **RBM**
 
-Regardons ce que cela donne en utilisant les RBM et la structure proposée :
+Regardons ce que cela donne en utilisant les RBMs et la structure proposée :
 
 ![RBMReconstruct(784-1000-500-250-100-30)](src\RBM\imgs\RBMReconstruct(784-1000-500-250-100-30).png)
 
-La reconstruction sur la gauche est nettement plus convaincante avec une erreur moyenne (MSE) de 2.2 pour les données d'entrainement et de 3.5 pour les données de test ce qui est vraiment satisfaisant. Ici la dimension d'encodage permet de conserver la complexité des données tout en réduisant drastiquement la dimensionnalité de celles-ci de près de ${784\over30} \approx 26$ fois !
+La reconstruction sur la gauche est nettement plus convaincante avec une erreur moyenne (MSE) de 2.2 pour les données d'entraînement et de 3.5 pour les données de test ce qui est vraiment satisfaisant. Ici la dimension d'encodage permet de conserver la complexité des données tout en réduisant drastiquement la dimensionnalité de celles-ci de près de ${784\over30} \approx 26$ fois !
 
 ## Conclusion
 
-Comme nous venons de le voir, l'approche de pré-apprentissage en utilisant des RBM s'avère très convaincante. Cela permet d'entrainer un réseau auto-encodeur dans un temps raisonnable tout en produisant des résultats honorables.
+Comme nous venons de le voir, l'approche de pré-apprentissage en utilisant des RBMs s'avère très convaincante. Cela permet d'entrainer un réseau auto-encodeur dans un temps raisonnable tout en produisant des résultats honorables.
 
-Pour égaler ces résultats, une approche par composantes principales devrait quand à elle conserver près de 450 (sur 784) dimensions pour le dataset MNIST contre seulement 30 par l'approche proposée.
+Pour égaler ces résultats, une approche par composantes principales devrait quant à elle conserver près de 450 (sur 784) dimensions pour le dataset MNIST contre seulement 30 pour l'approche proposée.
 
-Cette réduction est intéressante et a plusieurs applications donc deux importantes en pratique:
+Cette réduction est intéressante et a plusieurs applications dont deux importantes en pratique:
 
 - Le stockage et la compression pure des données
-- L'amélioration de la rapidité d'entrainement d'un algorithme de classification
+- L'amélioration de la rapidité d'entraînement d'un algorithme de classification
 
 Une amélioration pertinente serait d'utiliser une autre fonction d'erreur plus adaptée aux images plutôt que la MSE utilisée jusqu'à présent. En effet des erreurs comme le PSNR ou la SSIM pourraient être qualitativement plus pertinentes pour comparer des images.
 
-Une force de cette approche par rapport à une approche naïve d'un auto-encodeur par descente de gradient et le fait l'étape de pré-entrainement par RBM permet au modèle d'être construit directement autour des données à modéliser.
+Une force de cette approche par rapport à une approche naïve d'un auto-encodeur par descente de gradient est le fait que l'étape de pré-entraînement par RBM permet au modèle d'être construit directement autour des données à modéliser.
 
 > "Pretraining helps generalization because it ensures that most of the information in the weights comes from modeling the images".
 
-Cette approche permet de contre balancer l'un des point faible des auto-encodeur à savoir la complexité en temps de l'entrainement par rapport à la taille des donnés 
+Cette approche permet de contre balancer l'un des point faible des auto-encodeur à savoir la complexité en temps de l'entraînement par rapport à la taille des donnés 
 
 > "All three conditions are now satisfied. Unlike nonparametric methods (15, 16), autoencoders give mappings in both directions between the data and code spaces, and they can be applied to very large data sets because both the pretraining and the fine-tuning scale linearly in time and space with the number of training cases."
 
-Bien que les RBM soient parfois encore utilisées, cette technique deviens peu à peu dépréciée au profit de réseaux adversaires générateurs (GAN) ou d'auto-codeurs variationnels (VAE)  plus performant et permettant d'obtenir des résultats plus intéressants notamment du points de vu de la génération de données et de la représentation de l'espace latent.
+Bien que les RBMs soient parfois encore utilisées, cette technique devient peu à peu dépréciée au profit de réseaux adversaires générateurs (GAN) ou d'auto-codeurs variationnels (VAE) plus performants et permettant d'obtenir des résultats plus intéressants notamment du point de vue de la génération de données et de la représentation de l'espace latent.
 
-On peu citer quelques papiers de recherches qui abordent ces sujets : 
+On peut citer quelques papiers de recherche qui abordent ces sujets : 
 
 - https://www.worldscientific.com/doi/10.1142/S1469026820500029
 - https://arxiv.org/abs/2002.10464
@@ -548,7 +548,7 @@ On peu citer quelques papiers de recherches qui abordent ces sujets :
 
 ## Annexes
 
-Visualisation des étapes d'entrainement des RBM pour le modèle **784-1000-500-250-100-30** :
+Visualisation des étapes d'entraînement des RBMs pour le modèle **784-1000-500-250-100-30** :
 
 > à gauche les données et à droite leur reconstruction par RBM
 
