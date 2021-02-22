@@ -1,6 +1,12 @@
 # Reducing the Dimensionality of Data with Neural Networks
 
-by G. E. Hinton and R. R. Salakhutdinov
+
+
+<p style="text-align: center;">G. E. Hinton and R. R. Salakhutdinov</p>
+
+
+
+<p style="text-align: center;">Etude menée par DE SMET Enguerrand et FOUCHY Jules</p>
 
 ## Abstract
 
@@ -22,15 +28,21 @@ Enfin, nous allons comparer les résultats obtenus et conclure sur quelle est la
 
 ## Introduction
 
-**TODO**
+De nos jours, nous sommes amenés à manipuler toutes sortent de données. Que ce soit dans notre vie quotidienne via des photos par exemple ou alors dans un cadre professionnel pour de l'analyse et de la recherche par exemple.
+Toutes ces données peuvent parfois être conséquentes et nécessitent une compression avec le moins de perte possible pour leur stockage ou une synthèse de celles-ci afin être analysé efficacement et rapidement par la suite.
 
-- Presentation of the problem(s). 
+C'est tout l'enjeu de ce papier de recherche proposé par [G. E. Hinton et R. R. Salakhutdinov](www.cs.toronto.edu/~hinton/science.pdf)  sur la réduction de données et intitulé *"Reducing the Dimensionality of Data with Neural Networks"*.
 
-- Previous works (at least a few citations). If relevant, include things that you have seen during the lectures.
+Ce problème est un grand classique en analyse de données. De nombreuse approches s'attaquent à ce problème et l'une d'entre elles est l'***analyse en composantes principales***.
+Cette technique, largement utilisée, essaye de réduire le nombre de dimension des données analysées en changement la manière dont elles sont représentés et en appliquant une projection (avec perte) de celles-ci.
 
-- Contributions. Why is the studied method different/better/worse/etc. than existing previous works. 
+Cette technique très rapide et efficace s'avère néanmoins limités dans le cadre de fortes compressions où les pertes deviennent malheureusement trop conséquentes.
 
-  
+Des approches plus récentes utilisant des réseaux de neurones s'avèrent plus efficaces et permettent d'obtenir des ratios de compression remarquables. Cependant, ces approches nécessitent souvent un apprentissage long et ces architectures complexes ne fonctionnement bien que si leur état initial est proche d'une bonne solution.
+
+La solution proposée dans ce papier de recherche aborde le modèle des ***Restricted Boltzmann Machines***. Cette approche plus rapide va permettre de se rapprocher rapidement d'une bonne solution pour ensuite permettre à une architecture plus complexe (auto-encodeur) mais aussi plus efficace de converger vers une solution satisfaisante beaucoup plus rapidement.
+
+Nous allons dont détailler par la suite ces deux approches pour comparer les résultats obtenus et conclure sur efficacité de la méthode proposée par [G. E. Hinton et R. R. Salakhutdinov](www.cs.toronto.edu/~hinton/science.pdf) .
 
 <div style="page-break-after: always; break-after: page;"></div>
 
@@ -184,6 +196,8 @@ Dans notre cas 2D il était évident qu'une seule direction ou dimension était 
 Il y a plusieurs façons de faire ce choix. Il faudra généralement faire un compromis entre la précision et la vitesse de calcul. On peut par exemple exprimer sur un graphique la variance des données en fonction du nombre de composantes que l'on garde.
 
 Abordons pour finir cette partie sur l'ACP un exemple plus concret illustrant cette méthode de sélection et un cas "réel" d'application de l'ACP.
+
+<div style="page-break-after: always; break-after: page;"></div>
 
 ### Example: MNIST dataset
 
@@ -446,8 +460,6 @@ Ces RMBs sont ensuite utilisées dans l'autre sens (unfolding multicouche) pour 
 
 ![image-20210205113440207](imgs\RMBAutoEncoder.png)
 
-
-
 <div style="page-break-after: always; break-after: page;"></div>
 
 ## Comparaison et résultats
@@ -536,13 +548,17 @@ On peut citer quelques papiers de recherche qui abordent ces sujets :
 
 ## Bibliographie
 
-[G. E. Hinton* and R. R. Salakhutdinov]: https://www.cs.toronto.edu/~hinton/science.pdf	"Reducing the Dimensionality of Data with Neural Networks"
-[Luis Serrano]: https://www.youtube.com/watch?v=Fkw0_aAtwIw	"Restricted Boltzmann Machines - A friendly introduction"
-[3Blue1Brown]: https://www.youtube.com/watch?v=PFDu9oVAE-g	"Les vecteurs propres et valeurs propres"
+**G. E. Hinton* and R. R. Salakhutdinov:** [Reducing the Dimensionality of Data with Neural Networks](https://www.cs.toronto.edu/~hinton/science.pdf)
 
-[Geoffrey Hinton]: http://www.cs.toronto.edu/~hinton/absps/guideTR.pdf	"A Practical Guide to Training Restricted Boltzmann Machines"
-[Geoffrey E. Hinton and Simon Osindero]: http://www.cs.toronto.edu/~hinton/absps/fastnc.pdf	"A fast learning algorithm for deep belief nets"
-[Chris Nicholson]: https://wiki.pathmind.com/restricted-boltzmann-machine	"A Beginner's Guide to Restricted Boltzmann Machines"
+**Luis Serrano:** [Restricted Boltzmann Machines - A friendly introduction](https://www.youtube.com/watch?v=Fkw0_aAtwIw )
+
+**3Blue1Brown:** [Les vecteurs propres et valeurs propres](https://www.youtube.com/watch?v=PFDu9oVAE-g )
+
+**Geoffrey Hinton:** [A Practical Guide to Training Restricted Boltzmann Machines]( http://www.cs.toronto.edu/~hinton/absps/guideTR.pdf )
+
+**Geoffrey E. Hinton and Simon Osindero:** [A fast learning algorithm for deep belief nets](http://www.cs.toronto.edu/~hinton/absps/fastnc.pdf)
+
+**Chris Nicholson:** [A Beginner's Guide to Restricted Boltzmann Machines](https://wiki.pathmind.com/restricted-boltzmann-machine)
 
 <div style="page-break-after: always; break-after: page;"></div>
 
