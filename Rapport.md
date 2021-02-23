@@ -28,21 +28,21 @@ Enfin, nous allons comparer les résultats obtenus et conclure sur quelle est la
 
 ## Introduction
 
-De nos jours, nous sommes amenés à manipuler toutes sortent de données. Que ce soit dans notre vie quotidienne via des photos par exemple ou alors dans un cadre professionnel pour de l'analyse et de la recherche par exemple.
-Toutes ces données peuvent parfois être conséquentes et nécessitent une compression avec le moins de perte possible pour leur stockage ou une synthèse de celles-ci afin être analysé efficacement et rapidement par la suite.
+De nos jours, nous sommes amenés à manipuler toutes sortes de données. Que ce soit dans notre vie quotidienne via des photos par exemple ou alors dans un cadre professionnel pour de l'analyse et de la recherche par exemple.
+Toutes ces données peuvent parfois être conséquentes et nécessitent une compression avec le moins de pertes possible pour leur stockage ou une synthèse de celles-ci afin d'être analysées efficacement et rapidement par la suite.
 
 C'est tout l'enjeu de ce papier de recherche proposé par [G. E. Hinton et R. R. Salakhutdinov](www.cs.toronto.edu/~hinton/science.pdf)  sur la réduction de données et intitulé *"Reducing the Dimensionality of Data with Neural Networks"*.
 
 Ce problème est un grand classique en analyse de données. De nombreuse approches s'attaquent à ce problème et l'une d'entre elles est l'***analyse en composantes principales***.
-Cette technique, largement utilisée, essaye de réduire le nombre de dimension des données analysées en changement la manière dont elles sont représentés et en appliquant une projection (avec perte) de celles-ci.
+Cette technique, largement utilisée, essaye de réduire le nombre de dimensions des données analysées en changeant la manière dont elles sont représentées et en appliquant une projection (avec perte) de celles-ci.
 
-Cette technique très rapide et efficace s'avère néanmoins limités dans le cadre de fortes compressions où les pertes deviennent malheureusement trop conséquentes.
+Cette technique très rapide et efficace s'avère néanmoins limitée dans le cadre de fortes compressions où les pertes deviennent malheureusement trop conséquentes.
 
 Des approches plus récentes utilisant des réseaux de neurones s'avèrent plus efficaces et permettent d'obtenir des ratios de compression remarquables. Cependant, ces approches nécessitent souvent un apprentissage long et ces architectures complexes ne fonctionnement bien que si leur état initial est proche d'une bonne solution.
 
-La solution proposée dans ce papier de recherche aborde le modèle des ***Restricted Boltzmann Machines***. Cette approche plus rapide va permettre de se rapprocher rapidement d'une bonne solution pour ensuite permettre à une architecture plus complexe (auto-encodeur) mais aussi plus efficace de converger vers une solution satisfaisante beaucoup plus rapidement.
+La solution proposée dans ce papier de recherche aborde le modèle des ***Restricted Boltzmann Machines***. Cette approche plus rapide va permettre de se rapprocher rapidement d'une bonne solution pour ensuite permettre à une architecture plus complexe mais aussi plus efficace (auto-encodeur) de converger vers une solution satisfaisante beaucoup plus rapidement.
 
-Nous allons dont détailler par la suite ces deux approches pour comparer les résultats obtenus et conclure sur efficacité de la méthode proposée par [G. E. Hinton et R. R. Salakhutdinov](www.cs.toronto.edu/~hinton/science.pdf) .
+Nous allons dont détailler par la suite ces deux approches pour comparer les résultats obtenus et conclure sur l'efficacité de la méthode proposée par [G. E. Hinton et R. R. Salakhutdinov](www.cs.toronto.edu/~hinton/science.pdf) .
 
 <div style="page-break-after: always; break-after: page;"></div>
 
